@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>RevOps Roadmap — June 2026 + H2 + 2027</title>
+<title>RevOps Roadmap — 2026 + 2027</title>
 <style>
   :root {
     --teal: #0F3535;
@@ -62,11 +62,29 @@
 
   .meta strong { color: var(--teal); }
 
-  .roadmap {
-    display: grid;
-    grid-template-columns: 180px repeat(4, 1fr);
-    gap: 8px;
+  /* ── Gantt-style layout ── */
+
+  .roadmap-wrap {
     margin-bottom: 32px;
+  }
+
+  /* Header row */
+  .roadmap-header {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .header-spacer {
+    width: 180px;
+    flex-shrink: 0;
+  }
+
+  .timeline-headers {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
   }
 
   .time-header {
@@ -89,9 +107,17 @@
   .time-header .quarter { font-size: 16px; }
   .time-header .months { font-size: 11px; opacity: 0.85; font-weight: 500; margin-top: 2px; }
 
-  .swimlane-empty { background: transparent; }
+  /* Each lane row */
+  .roadmap-lane {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    align-items: stretch;
+  }
 
   .swimlane-label {
+    width: 180px;
+    flex-shrink: 0;
     padding: 14px 12px;
     font-weight: 700;
     font-size: 13px;
@@ -110,21 +136,26 @@
   .lane-6 { background: var(--accent-6); }
   .lane-7 { background: var(--accent-8); }
 
-  .cell {
-    background: var(--light-gray);
-    border-radius: 6px;
-    padding: 10px;
-    min-height: 90px;
-    display: flex;
-    flex-direction: column;
+  /* Timeline grid inside each lane */
+  .lane-timeline {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 6px;
+    grid-auto-flow: dense;
+    align-items: start;
   }
 
-  .cell.june {
-    background: #FBFCE5;
-    border: 1px dashed var(--lime);
-  }
+  /* Column positioning */
+  .col-june  { grid-column: 1; }
+  .col-q3    { grid-column: 2; }
+  .col-q4    { grid-column: 3; }
+  .col-2027  { grid-column: 4; }
+  .col-june-q3  { grid-column: 1 / 3; }
+  .col-q3-q4    { grid-column: 2 / 4; }
+  .col-q4-2027  { grid-column: 3 / 5; }
 
+  /* Cards */
   .card {
     background: var(--white);
     border-left: 4px solid var(--accent-1);
@@ -169,8 +200,8 @@
   }
 
   .pill-june { background: var(--lime); color: var(--teal); }
-  .pill-q3 { background: var(--accent-7); color: var(--white); }
-  .pill-q4 { background: var(--accent-2); color: var(--white); }
+  .pill-q3   { background: var(--accent-7); color: var(--white); }
+  .pill-q4   { background: var(--accent-2); color: var(--white); }
   .pill-2027 { background: var(--row-tint); color: var(--teal); }
 
   .legend {
@@ -187,38 +218,6 @@
   .legend-item { display: flex; align-items: center; gap: 6px; }
   .swatch { width: 14px; height: 14px; border-radius: 3px; }
 
-  .narrative {
-    margin-top: 32px;
-    padding: 24px;
-    background: var(--row-tint);
-    border-radius: 8px;
-    border-left: 4px solid var(--teal);
-  }
-
-  .narrative h2 {
-    font-size: 16px;
-    color: var(--teal);
-    margin-bottom: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .narrative p {
-    font-size: 13px;
-    line-height: 1.6;
-    color: var(--teal);
-    margin-bottom: 10px;
-  }
-
-  .narrative ol {
-    padding-left: 20px;
-    font-size: 13px;
-    line-height: 1.7;
-    color: var(--teal);
-  }
-
-  .narrative ol li { margin-bottom: 6px; }
-
   .footer {
     margin-top: 24px;
     text-align: center;
@@ -228,7 +227,7 @@
 
   @media print {
     body { padding: 12px; }
-    .roadmap { page-break-inside: avoid; }
+    .roadmap-wrap { page-break-inside: avoid; }
   }
 </style>
 </head>
@@ -244,116 +243,103 @@
   </div>
 </div>
 
-<div class="roadmap">
+<div class="roadmap-wrap">
 
-  <!-- Time headers -->
-  <div class="swimlane-empty"></div>
-  <div class="time-header june"><div class="quarter">June</div><div class="months">Pre-Q3 sprint</div></div>
-  <div class="time-header"><div class="quarter">Q3 2026</div><div class="months">Jul – Sep</div></div>
-  <div class="time-header"><div class="quarter">Q4 2026</div><div class="months">Oct – Dec</div></div>
-  <div class="time-header"><div class="quarter">2027</div><div class="months">Full year</div></div>
+  <!-- Column headers -->
+  <div class="roadmap-header">
+    <div class="header-spacer"></div>
+    <div class="timeline-headers">
+      <div class="time-header june"><div class="quarter">June</div><div class="months">Pre-Q3 sprint</div></div>
+      <div class="time-header"><div class="quarter">Q3 2026</div><div class="months">Jul – Sep</div></div>
+      <div class="time-header"><div class="quarter">Q4 2026</div><div class="months">Oct – Dec</div></div>
+      <div class="time-header"><div class="quarter">2027</div><div class="months">Full year</div></div>
+    </div>
+  </div>
 
   <!-- Lane 1: SFDC Foundation -->
-  <div class="swimlane-label lane-1">SFDC Foundation</div>
-  <div class="cell june">
-    <div class="card lane-1"><span class="priority-pill pill-june">June</span><div class="title">Account cleanup</div><div class="meta-tag">✅ Complete</div></div>
+  <div class="roadmap-lane">
+    <div class="swimlane-label lane-1">SFDC Foundation</div>
+    <div class="lane-timeline">
+      <div class="card lane-1 col-june"><span class="priority-pill pill-june">June</span><div class="title">Account cleanup</div><div class="meta-tag">✅ Complete</div></div>
+      <div class="card lane-1 col-june-q3"><span class="priority-pill pill-q3">Q3</span><div class="title">Opportunity object redesign</div><div class="meta-tag">Pushed to July</div></div>
+      <div class="card lane-1 col-q3"><span class="priority-pill pill-q3">Q3</span><div class="title">Opportunity cleanup</div><div class="meta-tag">Pushed to July</div></div>
+      <div class="card lane-1 col-q3"><span class="priority-pill pill-q3">Q3</span><div class="title">Unique identifier work</div><div class="meta-tag">🔄 In Progress · Due 7/31</div></div>
+      <div class="card lane-1 col-q3"><span class="priority-pill pill-q3">Q3</span><div class="title">Scope pricing + proposal tracking</div><div class="meta-tag">Opp products · line items · quoted vs actual</div></div>
+      <div class="card lane-1 col-q4"><span class="priority-pill pill-q4">Q4</span><div class="title">Contact structure + activity tracking + optimization</div><div class="meta-tag">RI pre-req · due 12/31</div></div>
+    </div>
   </div>
-  <div class="cell">
-    <div class="card lane-1"><span class="priority-pill pill-q3">Q3</span><div class="title">Opportunity object redesign</div><div class="meta-tag">Pushed to July</div></div>
-    <div class="card lane-1"><span class="priority-pill pill-q3">Q3</span><div class="title">Opportunity cleanup</div><div class="meta-tag">Pushed to July</div></div>
-    <div class="card lane-1"><span class="priority-pill pill-q3">Q3</span><div class="title">Unique identifier work</div><div class="meta-tag">🔄 In Progress · Due 7/31</div></div>
-    <div class="card lane-1"><span class="priority-pill pill-q3">Q3</span><div class="title">Scope pricing + proposal tracking</div><div class="meta-tag">Opp products · line items · quoted vs actual</div></div>
-  </div>
-  <div class="cell">
-    <div class="card lane-1"><span class="priority-pill pill-q4">Q4</span><div class="title">Contact structure + activity tracking + optimization</div><div class="meta-tag">RI pre-req · due 12/31</div></div>
-  </div>
-  <div class="cell"></div>
 
   <!-- Lane 2: Operating Cadence & Reporting -->
-  <div class="swimlane-label lane-2">Operating Cadence &amp; Reporting</div>
-  <div class="cell june">
-    <div class="card lane-2"><span class="priority-pill pill-june">June</span><div class="title">Pipeline coverage in review + MBR</div><div class="meta-tag">✅ Complete</div></div>
-    <div class="card lane-2"><span class="priority-pill pill-june">June</span><div class="title">Pipeline Coverage report</div><div class="meta-tag">✅ Complete</div></div>
-    <div class="card lane-2"><span class="priority-pill pill-june">June</span><div class="title">Win Rate tracking</div><div class="meta-tag">✅ Complete · by segment pending segment definition</div></div>
-    <div class="card lane-2"><span class="priority-pill pill-june">June</span><div class="title">Sales Cycle Length</div><div class="meta-tag">✅ Complete · by segment pending segment definition</div></div>
+  <div class="roadmap-lane">
+    <div class="swimlane-label lane-2">Operating Cadence &amp; Reporting</div>
+    <div class="lane-timeline">
+      <div class="card lane-2 col-june"><span class="priority-pill pill-june">June</span><div class="title">Pipeline coverage in review + MBR</div><div class="meta-tag">✅ Complete</div></div>
+      <div class="card lane-2 col-june"><span class="priority-pill pill-june">June</span><div class="title">Pipeline Coverage report</div><div class="meta-tag">✅ Complete</div></div>
+      <div class="card lane-2 col-june"><span class="priority-pill pill-june">June</span><div class="title">Win Rate tracking</div><div class="meta-tag">✅ Complete · by segment pending</div></div>
+      <div class="card lane-2 col-june"><span class="priority-pill pill-june">June</span><div class="title">Sales Cycle Length</div><div class="meta-tag">✅ Complete · by segment pending</div></div>
+      <div class="card lane-2 col-q3"><span class="priority-pill pill-q3">Q3</span><div class="title">First reporting QBR</div><div class="meta-tag">✅ Complete</div></div>
+      <div class="card lane-2 col-q3"><span class="priority-pill pill-q3">Q3</span><div class="title">Pipeline Waterfall</div><div class="meta-tag">⏸ Pushed · no accurate slip data yet</div></div>
+      <div class="card lane-2 col-q3"><span class="priority-pill pill-q3">Q3</span><div class="title">Stage Conversion funnel</div><div class="meta-tag">⏸ Pushed · no accurate data yet</div></div>
+      <div class="card lane-2 col-q3"><span class="priority-pill pill-q3">Q3</span><div class="title">Define segment taxonomy</div><div class="meta-tag">What do we cut by · what makes sense for our business</div></div>
+      <div class="card lane-2 col-q4"><span class="priority-pill pill-q4">Q4</span><div class="title">Full QBR — team presents + reviews</div><div class="meta-tag">Real sales-org style</div></div>
+      <div class="card lane-2 col-q4"><span class="priority-pill pill-q4">Q4</span><div class="title">Establish GTM Council</div><div class="meta-tag">Cross-functional decision forum · biweekly</div></div>
+    </div>
   </div>
-  <div class="cell">
-    <div class="card lane-2"><span class="priority-pill pill-q3">Q3</span><div class="title">First reporting QBR</div><div class="meta-tag">✅ Complete</div></div>
-    <div class="card lane-2"><span class="priority-pill pill-q3">Q3</span><div class="title">Pipeline Waterfall</div><div class="meta-tag">⏸ Pushed · no accurate slip data yet</div></div>
-    <div class="card lane-2"><span class="priority-pill pill-q3">Q3</span><div class="title">Stage Conversion funnel</div><div class="meta-tag">⏸ Pushed · no accurate data yet</div></div>
-    <div class="card lane-2"><span class="priority-pill pill-q3">Q3</span><div class="title">Define segment taxonomy</div><div class="meta-tag">What do we cut by · what makes sense for our business</div></div>
-  </div>
-  <div class="cell">
-    <div class="card lane-2"><span class="priority-pill pill-q4">Q4</span><div class="title">Full QBR — team presents + reviews</div><div class="meta-tag">Real sales-org style</div></div>
-    <div class="card lane-2"><span class="priority-pill pill-q4">Q4</span><div class="title">Forecast vs. Actuals</div><div class="meta-tag">Commit / most likely / best case</div></div>
-    <div class="card lane-2"><span class="priority-pill pill-q4">Q4</span><div class="title">Establish GTM Council</div><div class="meta-tag">Cross-functional decision forum · biweekly</div></div>
-  </div>
-  <div class="cell"></div>
 
   <!-- Lane 3: Planning & Forecasting -->
-  <div class="swimlane-label lane-3">Planning &amp; Forecasting</div>
-  <div class="cell june">
-    <div class="card lane-3"><span class="priority-pill pill-june">June</span><div class="title">Scope capacity model</div><div class="meta-tag">✅ Complete · template built</div></div>
+  <div class="roadmap-lane">
+    <div class="swimlane-label lane-3">Planning &amp; Forecasting</div>
+    <div class="lane-timeline">
+      <div class="card lane-3 col-june"><span class="priority-pill pill-june">June</span><div class="title">Scope capacity model</div><div class="meta-tag">✅ Complete · template built</div></div>
+      <div class="card lane-3 col-q3"><span class="priority-pill pill-q3">Q3</span><div class="title">Build forecast muscle with BD team</div><div class="meta-tag">Commit / best case / most likely</div></div>
+      <div class="card lane-3 col-q3"><span class="priority-pill pill-q3">Q3</span><div class="title">Implement forecast meeting w/ sales team</div></div>
+      <div class="card lane-3 col-q4"><span class="priority-pill pill-q4">Q4</span><div class="title">Map capacity model to finance goals</div><div class="meta-tag">Align to FY27 targets</div></div>
+      <div class="card lane-3 col-q4"><span class="priority-pill pill-q4">Q4</span><div class="title">Capacity model v1</div><div class="meta-tag">For FY27 planning</div></div>
+      <div class="card lane-3 col-q4"><span class="priority-pill pill-q4">Q4</span><div class="title">Forecast methodology maturity + accuracy benchmarking</div></div>
+    </div>
   </div>
-  <div class="cell">
-    <div class="card lane-3"><span class="priority-pill pill-q3">Q3</span><div class="title">Build forecast muscle with BD team</div><div class="meta-tag">Commit / best case / most likely</div></div>
-    <div class="card lane-3"><span class="priority-pill pill-q3">Q3</span><div class="title">Implement forecast meeting w/ sales team</div></div>
-  </div>
-  <div class="cell">
-    <div class="card lane-3"><span class="priority-pill pill-q4">Q4</span><div class="title">Map capacity model to finance goals</div><div class="meta-tag">Align to FY27 targets</div></div>
-    <div class="card lane-3"><span class="priority-pill pill-q4">Q4</span><div class="title">Capacity model v1</div><div class="meta-tag">For FY27 planning</div></div>
-    <div class="card lane-3"><span class="priority-pill pill-q4">Q4</span><div class="title">Forecast methodology maturity + accuracy benchmarking</div></div>
-  </div>
-  <div class="cell"></div>
 
   <!-- Lane 4: AI & Relationship Intelligence -->
-  <div class="swimlane-label lane-4">AI &amp; Relationship Intelligence</div>
-  <div class="cell june">
-    <div class="card lane-4"><span class="priority-pill pill-june">June</span><div class="title">AI workflow: Bizdev Flash feedback agent</div><div class="meta-tag">✅ Complete · Slack → deck</div></div>
+  <div class="roadmap-lane">
+    <div class="swimlane-label lane-4">AI &amp; Relationship Intelligence</div>
+    <div class="lane-timeline">
+      <div class="card lane-4 col-june"><span class="priority-pill pill-june">June</span><div class="title">AI workflow: Bizdev Flash feedback agent</div><div class="meta-tag">✅ Complete · Slack → deck</div></div>
+      <div class="card lane-4 col-q3"><span class="priority-pill pill-q3">Q3</span><div class="title">Scope Relationship Intelligence program</div><div class="meta-tag">Workstreams · prototype build · sequencing</div></div>
+      <div class="card lane-4 col-q4"><span class="priority-pill pill-q4">Q4</span><div class="title">AI CRM cleanup workflow (Baseloop pattern)</div><div class="meta-tag">Weekly audit · open-source Claude Code skills</div></div>
+    </div>
   </div>
-  <div class="cell">
-    <div class="card lane-4"><span class="priority-pill pill-q3">Q3</span><div class="title">Scope Relationship Intelligence program</div><div class="meta-tag">Workstreams · prototype build · sequencing</div></div>
-  </div>
-  <div class="cell">
-    <div class="card lane-4"><span class="priority-pill pill-q4">Q4</span><div class="title">AI CRM cleanup workflow (Baseloop pattern)</div><div class="meta-tag">Weekly audit · open-source Claude Code skills</div></div>
-  </div>
-  <div class="cell"></div>
 
   <!-- Lane 5: Territory & GTM Architecture -->
-  <div class="swimlane-label lane-5">Territory &amp; GTM Architecture</div>
-  <div class="cell june"></div>
-  <div class="cell">
-    <div class="card lane-5"><span class="priority-pill pill-q3">Q3</span><div class="title">Cleaning + architecture phase</div><div class="meta-tag">In progress w/ Martha · due 9/30</div></div>
-    <div class="card lane-5"><span class="priority-pill pill-q3">Q3</span><div class="title">Rules of engagement + lead routing</div><div class="meta-tag">Inbound + handoffs · so Maeve can action vs Martha</div></div>
-    <div class="card lane-5"><span class="priority-pill pill-q3">Q3</span><div class="title">Define pipeline categorization</div><div class="meta-tag">Segment size + vertical · coverage targets per segment</div></div>
-    <div class="card lane-5"><span class="priority-pill pill-q3">Q3</span><div class="title">Define ICP &amp; Personas</div><div class="meta-tag">Deeper than initial work · buying committee + triggers</div></div>
-    <div class="card lane-5"><span class="priority-pill pill-q3">Q3</span><div class="title">Expansion opp ownership clarity</div><div class="meta-tag">🔴 Urgent · who owns what · rules of engagement</div></div>
-  </div>
-  <div class="cell">
-    <div class="card lane-5"><span class="priority-pill pill-q4">Q4</span><div class="title">Territory design draft</div></div>
-  </div>
-  <div class="cell">
-    <div class="card lane-5"><span class="priority-pill pill-2027">2027</span><div class="title">Territory design launch</div><div class="meta-tag">FY27 GTM start</div></div>
+  <div class="roadmap-lane">
+    <div class="swimlane-label lane-5">Territory &amp; GTM Architecture</div>
+    <div class="lane-timeline">
+      <div class="card lane-5 col-q3"><span class="priority-pill pill-q3">Q3</span><div class="title">Cleaning + architecture phase</div><div class="meta-tag">In progress w/ Martha · due 9/30</div></div>
+      <div class="card lane-5 col-q3"><span class="priority-pill pill-q3">Q3</span><div class="title">Rules of engagement + lead routing</div><div class="meta-tag">✅ Doc made · following until further notice</div></div>
+      <div class="card lane-5 col-q3"><span class="priority-pill pill-q3">Q3</span><div class="title">Define pipeline categorization</div><div class="meta-tag">Segment size + vertical · coverage targets per segment</div></div>
+      <div class="card lane-5 col-q3"><span class="priority-pill pill-q3">Q3</span><div class="title">Define ICP &amp; Personas</div><div class="meta-tag">Deeper than initial work · buying committee + triggers</div></div>
+      <div class="card lane-5 col-q3"><span class="priority-pill pill-q3">Q3</span><div class="title">Expansion opp ownership clarity</div><div class="meta-tag">Who owns what · revisit when comp structure changes</div></div>
+      <div class="card lane-5 col-q4"><span class="priority-pill pill-q4">Q4</span><div class="title">Territory design draft</div></div>
+      <div class="card lane-5 col-2027"><span class="priority-pill pill-2027">2027</span><div class="title">Territory design launch</div><div class="meta-tag">FY27 GTM start</div></div>
+    </div>
   </div>
 
   <!-- Lane 6: Marketing -->
-  <div class="swimlane-label lane-6">Marketing</div>
-  <div class="cell june" style="grid-column: span 2;">
-    <div class="card lane-6"><span class="priority-pill pill-q3">Q3</span><div class="title">Launch LinkedIn ads</div><div class="meta-tag">Spans June → Q3 · In Progress</div></div>
+  <div class="roadmap-lane">
+    <div class="swimlane-label lane-6">Marketing</div>
+    <div class="lane-timeline">
+      <div class="card lane-6 col-june-q3"><span class="priority-pill pill-q3">Q3</span><div class="title">Launch LinkedIn ads</div><div class="meta-tag">🔄 In Progress · spans June → July</div></div>
+      <div class="card lane-6 col-q3"><span class="priority-pill pill-q3">Q3</span><div class="title">Event attribution</div></div>
+    </div>
   </div>
-  <div class="cell"></div>
-  <div class="cell"></div>
 
   <!-- Lane 7: Sales Enablement -->
-  <div class="swimlane-label lane-7">Sales Enablement</div>
-  <div class="cell"></div>
-  <div class="cell">
-    <div class="card lane-7"><span class="priority-pill pill-q3">Q3</span><div class="title">Start monthly enablement sessions</div><div class="meta-tag">Awaiting offsite feedback</div></div>
+  <div class="roadmap-lane">
+    <div class="swimlane-label lane-7">Sales Enablement</div>
+    <div class="lane-timeline">
+      <div class="card lane-7 col-q3"><span class="priority-pill pill-q3">Q3</span><div class="title">Start monthly enablement sessions</div><div class="meta-tag">Awaiting offsite feedback</div></div>
+      <div class="card lane-7 col-q4"><span class="priority-pill pill-q4">Q4</span><div class="title">Voice of the Customer program</div><div class="meta-tag">Call transcripts (Granola+) → enablement insights</div></div>
+    </div>
   </div>
-  <div class="cell">
-    <div class="card lane-7"><span class="priority-pill pill-q4">Q4</span><div class="title">Voice of the Customer program</div><div class="meta-tag">Call transcripts (Granola+) → enablement insights</div></div>
-  </div>
-  <div class="cell"></div>
 
 </div>
 
@@ -372,7 +358,7 @@
 </div>
 
 <div class="footer">
-  Working document · iterate quarterly · last sync: June 3, 2026
+  Working document · iterate quarterly · last sync: July 1, 2026
 </div>
 
 </body>
