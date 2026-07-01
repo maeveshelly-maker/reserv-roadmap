@@ -157,11 +157,17 @@
     padding: 8px;
     pointer-events: none;
     box-sizing: border-box;
+    z-index: 0;
   }
 
   .lane-bg > div { flex: 1; border-radius: 6px; }
   .lane-bg-june { background: #FBFCE5; border: 1px dashed var(--lime); }
   .lane-bg-col  { background: var(--light-gray); }
+
+  .card {
+    position: relative;
+    z-index: 1;
+  }
 
   /* Column positioning */
   .col-june  { grid-column: 1 / 2; }
