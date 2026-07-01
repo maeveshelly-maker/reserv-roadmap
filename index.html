@@ -145,20 +145,23 @@
     grid-auto-flow: dense;
     align-items: start;
     position: relative;
+    padding: 8px;
   }
 
-  /* Column background layer */
+  /* Column background layer — same padding/gap as lane-timeline so columns align */
   .lane-bg {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
     gap: 6px;
+    padding: 8px;
     pointer-events: none;
+    box-sizing: border-box;
   }
 
-  .lane-bg-june { background: #FBFCE5; border: 1px dashed var(--lime); border-radius: 6px; }
-  .lane-bg-col  { background: var(--light-gray); border-radius: 6px; }
+  .lane-bg > div { flex: 1; border-radius: 6px; }
+  .lane-bg-june { background: #FBFCE5; border: 1px dashed var(--lime); }
+  .lane-bg-col  { background: var(--light-gray); }
 
   /* Column positioning */
   .col-june  { grid-column: 1 / 2; }
