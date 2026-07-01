@@ -129,13 +129,14 @@
     gap: 6px;
   }
 
-  .cell-june {
+  .cell-june { grid-column: 1 / 2; }
+
+  .cell-q3 {
     background: #FBFCE5;
     border: 1px dashed var(--lime);
-    grid-column: 1 / 2;
+    grid-column: 2 / 3;
   }
 
-  .cell-q3   { grid-column: 2 / 3; }
   .cell-q4   { grid-column: 3 / 4; }
   .cell-2027 { grid-column: 4 / 5; }
 
@@ -237,8 +238,8 @@
   <div class="roadmap-header">
     <div class="header-spacer"></div>
     <div class="timeline-headers">
-      <div class="time-header june"><div class="quarter">June</div><div class="months">Pre-Q3 sprint</div></div>
-      <div class="time-header"><div class="quarter">Q3 2026</div><div class="months">Jul – Sep</div></div>
+      <div class="time-header"><div class="quarter">June</div><div class="months">Pre-Q3 sprint</div></div>
+      <div class="time-header june"><div class="quarter">Q3 2026</div><div class="months">Jul – Sep</div></div>
       <div class="time-header"><div class="quarter">Q4 2026</div><div class="months">Oct – Dec</div></div>
       <div class="time-header"><div class="quarter">2027</div><div class="months">Full year</div></div>
     </div>
